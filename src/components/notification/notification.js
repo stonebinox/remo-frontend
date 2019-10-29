@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Brand } from '../brand/brand';
+import { NotificationBody } from './components/notification-body/notification-body';
 import './notification.sass';
 
 export class Notification extends Component {
@@ -7,7 +8,9 @@ export class Notification extends Component {
         return (
             <div className="notification">
                 <div class="notification-layout">
-                    <div></div>
+                    <div>
+                        <NotificationBody />
+                    </div>
                     <div>
                         <Brand />
                     </div>
