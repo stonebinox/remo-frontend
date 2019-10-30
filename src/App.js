@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Notification } from './components/notification/notification';
 import { Actions } from './components/actions/actions';
 import './App.sass';
 
-function App() {
-  return (
-    <div className="app">
-      <Notification />
-      <Actions />
-    </div>
-  );
-}
+export class App extends Component {
+  constructor(props) {
+    super(props);
 
-export default App;
+    this.state = {
+      currentEvent: null,
+    };
+
+    this.fireEvent = this.fireEvent.bind(this);
+    this.clearEvent = this.clearEvent.bind(this);
+  }
+
+  fireEvent(event) {
+    this.setState({
+      currentEvent: event,
+    });
+
+    let that = this;
+    setTimeout(() => that.clearEvent(), 5000);
+  }
+
+  clearEvent() {
+    this.setState({
+      currentEvent: null,
+    });
+  }
+
+  render() {
+    return (
+      <div className="app">
+        <Notification onClearEvent={this.clearEvent} event={this.state.currentEvent} />
+        <Actions onFireEvent={this.fireEvent} />
+      </div>
+    );
+  }
+}

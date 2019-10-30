@@ -11,8 +11,29 @@
     right: -350px
     margin-top: 200px
     margin-right: 10px
-    transition: all 0.5s ease
+    transition: all 0.3s ease
 
     &.active
         transform: translate(-350px, 0)
+
+    &.info
+        .notification-body
+            .title
+                color: #9689fa
+
+    &.alert
+        .notification-body
+            .title
+                color: #ffa500
+
+    &.alert-success
+        .notification-body
+            .title
+                color: #77b65d
+
+    &.danger
+        .notification-body
+            .title
+                color: #a31545
+
 
