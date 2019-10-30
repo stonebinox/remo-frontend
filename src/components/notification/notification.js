@@ -11,9 +11,12 @@ export class Notification extends Component {
 
     /**
      * Closes a notification
+     * 
+     * @param {Number}  eventId The ID of the event being closed
+     * @param {Boolean} auto    Determines if it was auto closed or not
      */
-    dismiss() {
-        this.props.onClearEvent();
+    dismiss(eventId, auto) {
+        this.props.onClearEvent(eventId, auto);
     }
 
     render() {

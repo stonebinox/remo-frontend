@@ -16,6 +16,25 @@ export class App extends Component {
 
     this.fireEvent = this.fireEvent.bind(this);
     this.clearEvent = this.clearEvent.bind(this);
+    this.notificationMonitor = this.notificationMonitor.bind(this);
+  }
+
+  notificationMonitor() {
+    if (this.state.eventHistory.length > 0) {
+      let history = this.state.eventHistory;
+
+      history.map((event, index) => {
+        const nowTs = new Date().getTime();
+        if (nowTs >= event.expire && !event.read && !event.expired) {
+          this.clearEvent(event.id, true);
+        }
+
+        return true;
+      });
+    }
+
+    // check every 500ms if a notification has to be hidden
+    setTimeout(() => this.notificationMonitor(), 500);
   }
 
   /**
@@ -28,10 +47,17 @@ export class App extends Component {
       eventHistory,
       eventCount,
     } = this.state;
+    const expireTs = new Date().getTime() + 5000;
 
     eventCount += 1;
     event.id = eventCount;
     event.read = false;
+    event.expire = expireTs;
+    event.expired = false;
+
+    if (eventHistory.length === 0) {
+      this.notificationMonitor();
+    }
 
     eventHistory.push(event);
 
@@ -40,36 +66,49 @@ export class App extends Component {
       eventHistory,
       eventCount,
     });
-
-    let that = this;
-    setTimeout(() => that.clearEvent(true), 5000);
   }
 
   /**
    * Clears a notification
    * 
-   * @param {Boolean} auto To determine if it was auto closed or user-closed 
+   * @param {Number}  eventId The ID of the event to clear
+   * @param {Boolean} auto    User initated or auto closed
    */
-  clearEvent(auto) {
+  clearEvent(eventId, auto) {
     let {
       eventHistory,
-      eventCount,
+      currentEvent,
     } = this.state;
 
-    if (!auto) {
-      eventHistory.map((event, index) => {
-        if (event.id === eventCount) {
-          event.read = true;
-          eventHistory[index] = event;
-        }
+    let targetEvent = null;
+    let position = null;
 
-        return true;
-      });
+    eventHistory.map((event, index) => {
+      if (event.id === eventId) {
+        targetEvent = event;
+        position = index;
+      }
+
+      return true;
+    });
+
+    if (targetEvent) {
+      targetEvent.expired = true;
+
+      if (!auto) {
+        targetEvent.read = true;
+      }
+
+      eventHistory[position] = targetEvent;
+
+      if (targetEvent.id === currentEvent.id) {
+        currentEvent = null;
+      }
     }
 
     this.setState({
-      currentEvent: null,
       eventHistory,
+      currentEvent,
     });
   }
 

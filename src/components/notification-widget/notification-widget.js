@@ -2,8 +2,33 @@ import React, { Component } from 'react';
 import './notification-widget.sass';
 
 export class NotificationWidget extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            widgetOpen: false,
+        };
+    }
+
+    openNotificationHistory() {
+        if (!this.state.widgetOpen) {
+            this.setState({
+                widgetOpen: true
+            });
+        } else {
+            this.setState({
+                widgetOpen: false
+            });
+        }
+    }
+
     render() {
         let widgetStyle = 'widget';
+
+        if (this.state.widgetOpen) {
+            widgetStyle += ' active';
+        }
+
         let unreadCount = 0;
 
         if (this.props.notifications.length > 0) {
@@ -13,7 +38,7 @@ export class NotificationWidget extends Component {
 
             notifications.map((notification, index) => {
                 if (!notification.read) {
-                    widgetStyle = 'widget unread';
+                    widgetStyle = this.state.widgetOpen ? 'widget active unread' : 'widget unread';
                     unreadCount += 1;
                 }
 
@@ -21,9 +46,14 @@ export class NotificationWidget extends Component {
             });
         }
 
+        let unreadCountText = unreadCount;
+        if (unreadCount > 99) {
+            unreadCountText = `99+`;
+        }
+
         return (
-            <div className={widgetStyle}>
-                { unreadCount > 0 ? unreadCount : <i className="fas fa-exclamation"></i> }
+            <div className={widgetStyle} onClick={() => this.openNotificationHistory()}>
+                { unreadCount > 0 ? unreadCountText : <i className="fas fa-exclamation"></i> }
             </div>
         );
     }

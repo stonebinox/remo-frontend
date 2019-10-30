@@ -66,18 +66,20 @@ export class NotificationBody extends Component {
     render() {
         let notificationTitle = '';
         let notificationBody = '';
+        let eventId = null;
 
         if (this.props.data !== null) {
             const notification = this.createNotification();
             notificationTitle = notification.title;
             notificationBody = notification.body;
+            eventId = this.props.data.id;
         }
 
         return (
             <div className="notification-body">
                 <div className="title">{notificationTitle}</div>
                 <div className="description" dangerouslySetInnerHTML={{ __html: notificationBody }} />
-                <button type="button" className="dismiss" onClick={() => this.props.onDismiss()}>Dismiss</button>
+                <button type="button" className="dismiss" onClick={() => this.props.onDismiss(eventId, false)}>Dismiss</button>
             </div>
         );
     }
