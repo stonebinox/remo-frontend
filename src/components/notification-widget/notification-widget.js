@@ -15,10 +15,14 @@ export class NotificationWidget extends Component {
             this.setState({
                 widgetOpen: true
             });
+
+            this.props.onClearAll();
         } else {
             this.setState({
                 widgetOpen: false
             });
+
+            this.props.onCloseHistory();
         }
     }
 

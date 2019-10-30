@@ -3,6 +3,7 @@ import { Notification } from './components/notification/notification';
 import { Actions } from './components/actions/actions';
 import { NotificationWidget } from './components/notification-widget/notification-widget';
 import './App.sass';
+import { NotificationHistory } from './components/notification-history/notification-history';
 
 export class App extends Component {
   constructor(props) {
@@ -12,13 +13,19 @@ export class App extends Component {
       currentEvent: null,
       eventHistory: [],
       eventCount: 0,
+      historyOpen: false,
     };
 
     this.fireEvent = this.fireEvent.bind(this);
     this.clearEvent = this.clearEvent.bind(this);
     this.notificationMonitor = this.notificationMonitor.bind(this);
+    this.clearAllEvents = this.clearAllEvents.bind(this);
+    this.closeHistory = this.closeHistory.bind(this);
   }
 
+  /**
+   * Monitors notifications that are open and expires them if required.
+   */
   notificationMonitor() {
     if (this.state.eventHistory.length > 0) {
       let history = this.state.eventHistory;
@@ -69,6 +76,34 @@ export class App extends Component {
   }
 
   /**
+   * Closes the notification history
+   */
+  closeHistory() {
+    this.setState({
+      historyOpen: false,
+    });
+  }
+
+  /**
+   * Essentially marks all notifications as read
+   */
+  clearAllEvents() {
+    const {
+      eventHistory
+    } = this.state;
+
+    eventHistory.map((event, index) => {
+      this.clearEvent(event.id, false);
+
+      return true;
+    });
+
+    this.setState({
+      historyOpen: true,
+    });
+  }
+
+  /**
    * Clears a notification
    * 
    * @param {Number}  eventId The ID of the event to clear
@@ -101,7 +136,7 @@ export class App extends Component {
 
       eventHistory[position] = targetEvent;
 
-      if (targetEvent.id === currentEvent.id) {
+      if (currentEvent && targetEvent.id === currentEvent.id) {
         currentEvent = null;
       }
     }
@@ -115,7 +150,8 @@ export class App extends Component {
   render() {
     return (
       <div className="app">
-        <NotificationWidget notifications={this.state.eventHistory} />
+        <NotificationWidget onClearAll={this.clearAllEvents} notifications={this.state.eventHistory} onCloseHistory={this.closeHistory} />
+        <NotificationHistory history={this.state.eventHistory}  historyOpen={this.state.historyOpen} />
         <Notification onClearEvent={this.clearEvent} event={this.state.currentEvent} />
         <Actions onFireEvent={this.fireEvent} />
       </div>

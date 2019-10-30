@@ -79,7 +79,7 @@ export class NotificationBody extends Component {
             <div className="notification-body">
                 <div className="title">{notificationTitle}</div>
                 <div className="description" dangerouslySetInnerHTML={{ __html: notificationBody }} />
-                <button type="button" className="dismiss" onClick={() => this.props.onDismiss(eventId, false)}>Dismiss</button>
+                { !this.props.onDismiss ? <span></span> : <button type="button" className="dismiss" onClick={() => this.props.onDismiss(eventId, false)}>Dismiss</button> }
             </div>
         );
     }

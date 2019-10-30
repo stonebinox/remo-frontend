@@ -1,0 +1,42 @@
+.history
+    position: fixed
+    top: 13%
+    right: -250px
+    margin-right: 8px
+    margin-top: -10px
+    width: 200px
+    height: 0
+    overflow: hidden
+    max-height: 0
+    background-color: #ffffff
+    border-radius: 5px
+    padding: 10px
+    transform: skewY(-20deg)
+    border-bottom: 2px solid #ccc
+    transition: transform 0.3s ease, max-height 1s ease
+
+    &.active
+        max-height: 400px
+        overflow: auto
+        height: auto
+        transform: translate(-250px, 0) skewY(0deg)
+
+    hr
+        height: 0
+        border: 0
+        border-top: 1px solid #ccc
+
+    strong
+        color: #666
+
+    p 
+        font-size: 13px
+        color: #666
+
+    .item
+        width: 100%
+        margin-bottom: 14px
+
+        .title
+            font-size: 13px
+            color: #444
