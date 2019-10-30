@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './notification-body.sass';
 
 export class NotificationBody extends Component {
+    /**
+     * Creates the notification title and body
+     * 
+     * @return {JSON}
+     */
     createNotification() {
         const {
             event_name,

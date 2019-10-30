@@ -21,6 +21,9 @@ export class Actions extends Component {
         this.randomizeName = this.randomizeName.bind(this);
     }
 
+    /**
+     * Gets random names for the notifications
+     */
     randomizeName() {
         const name = this.state.names[Math.floor(Math.random() * this.state.names.length)];
 

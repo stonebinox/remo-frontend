@@ -9,6 +9,9 @@ export class Notification extends Component {
         this.dismiss = this.dismiss.bind(this);
     }
 
+    /**
+     * Closes a notification
+     */
     dismiss() {
         this.props.onClearEvent();
     }
