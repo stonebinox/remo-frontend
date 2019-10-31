@@ -5,7 +5,7 @@
     margin-right: 8px
     margin-top: -10px
     width: 200px
-    height: 0
+    height: auto
     overflow: hidden
     max-height: 0
     background-color: #ffffff
@@ -13,12 +13,11 @@
     padding: 10px
     transform: skewY(-20deg)
     border-bottom: 2px solid #ccc
-    transition: transform 0.3s ease, max-height 1s ease
+    transition: transform 0.3s ease, max-height 0.5s ease
 
     &.active
         max-height: 400px
         overflow: auto
-        height: auto
         transform: translate(-250px, 0) skewY(0deg)
 
     hr

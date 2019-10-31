@@ -15,7 +15,7 @@ export class NotificationHistory extends Component {
             historyStyle += ' active';
         }
 
-        history = history.reverse();
+        const revHistory = history.slice().reverse();
 
         return (
             <div className={historyStyle}>{
@@ -24,7 +24,7 @@ export class NotificationHistory extends Component {
                         <strong>Notifications ({history.length})</strong>
                         <hr />
                         {
-                            history.map((event, index) => {
+                            revHistory.map((event, index) => {
                                 return (
                                     <div className="item" key={index}>
                                         <NotificationBody data={event} />
