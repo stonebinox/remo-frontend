@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactNotifications from 'react-browser-notifications';
 import './actions.sass';
 
 export class Actions extends Component {
@@ -20,11 +19,6 @@ export class Actions extends Component {
         };
 
         this.randomizeName = this.randomizeName.bind(this);
-        this.showBrowserNotification = this.showBrowserNotification.bind(this);
-    }
-
-    showBrowserNotification() {
-        if (this.n.supported()) this.n.show();
     }
 
     /**
@@ -45,15 +39,6 @@ export class Actions extends Component {
             <div className="actions">
                 <strong>Actions</strong>
                 <hr />
-                <ReactNotifications
-                    onRef={ref => (this.n = ref)} // Required
-                    title="Hey There!" // Required
-                    body="This is the body"
-                    // icon="icon.png"
-                    tag="abcdef"
-                    timeout="2000"
-                    onClick={event => this.n.close(event.target.tag)}
-                />
                 <button type="button" className="action" onClick={() => this.props.onFireEvent({
                     event_name: 'table_joined',
                     username: this.randomizeName(),
@@ -69,8 +54,6 @@ export class Actions extends Component {
                     this.setState({
                         currentName: null,
                     });
-
-                    this.showBrowserNotification();
                 }}>User left the table</button>
                 <button type="button" className="action" onClick={() => this.props.onFireEvent({
                     event_name: 'broadcast_start',

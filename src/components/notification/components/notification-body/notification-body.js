@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './notification-body.sass';
+import WebNotification from 'react-web-notification';
 
 export class NotificationBody extends Component {
     /**
@@ -67,19 +68,39 @@ export class NotificationBody extends Component {
         let notificationTitle = '';
         let notificationBody = '';
         let eventId = null;
+        let notificationBodyWeb = '';
 
         if (this.props.data !== null) {
             const notification = this.createNotification();
             notificationTitle = notification.title;
-            notificationBody = notification.body;
+            notificationBodyWeb = notificationBody = notification.body;
             eventId = this.props.data.id;
+
+            notificationBodyWeb = notificationBodyWeb.replace('<strong>', '');
+            notificationBodyWeb = notificationBodyWeb.replace('</strong>', '');
         }
 
         return (
             <div className="notification-body">
                 <div className="title">{notificationTitle}</div>
                 <div className="description" dangerouslySetInnerHTML={{ __html: notificationBody }} />
-                { !this.props.onDismiss ? <span></span> : <button type="button" className="dismiss" onClick={() => this.props.onDismiss(eventId, false)}>Dismiss</button> }
+                { !this.props.onDismiss ? <span></span> : (
+                    <div>
+                        <button type="button" className="dismiss" onClick={() => this.props.onDismiss(eventId, false)}>Dismiss</button>
+                        <WebNotification 
+                            title={notificationTitle}
+                            askAgain={true}
+                            notSupported={() => {
+                                console.log('Browser notifications have been blocked');
+                            }}
+                            options={{
+                                body: notificationBodyWeb,
+                                renotify: true,
+                                tag: eventId,
+                            }}
+                            />
+                    </div>
+                )}
             </div>
         );
     }
