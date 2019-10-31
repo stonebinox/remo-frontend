@@ -10,6 +10,9 @@ export class NotificationWidget extends Component {
         };
     }
 
+    /**
+     * Opens the notification history and moves the widget
+     */
     openNotificationHistory() {
         if (!this.state.widgetOpen) {
             this.setState({
